@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 // Definition for singly-linked list.
 struct ListNode {
     int val;
@@ -12,17 +11,32 @@ struct ListNode {
 
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head) {
-        ListNode* prev = nullptr;
-        ListNode* next = nullptr;
-        ListNode* cur = head;
-        while(cur != nullptr) {
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if (n == m) { return head; }
+        auto dummy = new ListNode(0);
+        dummy->next = head;
+        auto cur = dummy;
+        int len = 0;
+        auto mth_minus_1 = cur;
+        auto prev = cur;
+        for (; len < m; ++len) {
+            prev = cur;
+            cur = cur->next;
+        }
+        mth_minus_1 = prev;
+        auto mth = cur;
+        prev = cur;
+        cur = cur->next;
+        auto next = cur->next;
+        for (int i = 0; i < n - m; ++i) {
             next = cur->next;
             cur->next = prev;
             prev = cur;
             cur = next;
         }
-        return prev;
+        mth->next = cur;
+        mth_minus_1->next = prev;
+        return dummy->next;
     }
 };
 
